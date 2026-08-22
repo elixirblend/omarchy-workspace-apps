@@ -2,6 +2,8 @@
 
 A compact Omarchy top-bar workspace widget that shows which applications are open in each workspace.
 
+![Workspace Apps showing grouped application icons and workspace numbers](assets/workspace-apps.png)
+
 ## Features
 
 - Displays up to three application icons per workspace
