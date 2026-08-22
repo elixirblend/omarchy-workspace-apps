@@ -12,6 +12,7 @@ BarWidget {
   // Max app icons rendered per workspace before collapsing into "+N"
   property int maxIcons: 3
   readonly property real iconSize: Math.max(10, Math.min(14, root.barSize * 0.34))
+  readonly property real tripleIconSize: Math.max(8, Math.min(10, root.barSize * 0.27))
   readonly property real singleIconSize: Math.max(15, Math.min(17, root.barSize * 0.46))
 
   function workspaceById(id) {
@@ -159,7 +160,9 @@ BarWidget {
             Image {
               required property int index
               required property string modelData
-              readonly property real renderedSize: button.icons.urls.length === 1 ? root.singleIconSize : root.iconSize
+              readonly property real renderedSize: button.icons.urls.length === 1
+                ? root.singleIconSize
+                : (button.icons.urls.length >= 3 ? root.tripleIconSize : root.iconSize)
               source: modelData
               sourceSize.width: renderedSize
               sourceSize.height: renderedSize
@@ -169,19 +172,33 @@ BarWidget {
                 var count = button.icons.urls.length
                 if (count === 1) return (button.width - width) / 2
                 if (count === 2) return button.width / 2 - width + index * width
-                if (index === 0) return 5
-                if (index === 1) return button.width - width - 5
-                return (button.width - width) / 2
+                var gap = 1
+                var rowWidth = count * width + (count - 1) * gap
+                return (button.width - rowWidth) / 2 + index * (width + gap)
               }
               y: {
                 var count = button.icons.urls.length
                 if (count === 1) return (button.height - height) / 2 - 1
-                if (count === 2) return 4
-                return index < 2 ? 4 : button.height - height - 4
+                return 4
               }
               fillMode: Image.PreserveAspectFit
               smooth: true
             }
+          }
+
+          Text {
+            visible: button.icons.extra > 0
+            anchors.left: parent.left
+            anchors.leftMargin: 4
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 3
+            text: "+" + button.icons.extra
+            color: button.bar ? button.bar.barForeground : Color.foreground
+            font.family: button.fontFamily
+            font.pixelSize: Math.max(7, button.fontSize * 0.54)
+            font.weight: Font.DemiBold
+            style: Text.Outline
+            styleColor: Color.background
           }
 
           Text {
