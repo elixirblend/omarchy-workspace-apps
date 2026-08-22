@@ -172,13 +172,16 @@ BarWidget {
                 var count = button.icons.urls.length
                 if (count === 1) return (button.width - width) / 2
                 if (count === 2) return button.width / 2 - width + index * width
-                var gap = 1
-                var rowWidth = count * width + (count - 1) * gap
-                return (button.width - rowWidth) / 2 + index * (width + gap)
+                // Three icons use a compact 2-over-1 layout. Keeping the
+                // third icon on the lower-left leaves the workspace number
+                // readable in the lower-right corner.
+                if (index < 2) return button.width / 2 - width + index * width
+                return 3
               }
               y: {
                 var count = button.icons.urls.length
                 if (count === 1) return (button.height - height) / 2 - 1
+                if (count >= 3 && index === 2) return button.height - height - 3
                 return 4
               }
               fillMode: Image.PreserveAspectFit
@@ -188,10 +191,10 @@ BarWidget {
 
           Text {
             visible: button.icons.extra > 0
-            anchors.left: parent.left
-            anchors.leftMargin: 4
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 3
+            anchors.right: parent.right
+            anchors.rightMargin: 3
+            anchors.top: parent.top
+            anchors.topMargin: 2
             text: "+" + button.icons.extra
             color: button.bar ? button.bar.barForeground : Color.foreground
             font.family: button.fontFamily
