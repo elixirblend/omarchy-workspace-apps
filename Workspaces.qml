@@ -12,7 +12,7 @@ BarWidget {
   // Max app icons rendered per workspace before collapsing into "+N"
   property int maxIcons: 3
   readonly property real iconSize: Math.max(10, Math.min(14, root.barSize * 0.34))
-  readonly property real tripleIconSize: Math.max(11, Math.min(12, root.barSize / 2))
+  readonly property real tripleIconSize: Math.max(9, Math.min(11, (root.barSize - 3) / 2))
   readonly property real singleIconSize: Math.max(15, Math.min(17, root.barSize * 0.46))
 
   function workspaceById(id) {
@@ -178,32 +178,17 @@ BarWidget {
                 // third icon on the lower-left leaves the workspace number
                 // readable in the lower-right corner.
                 if (index < 2) return parent.width / 2 - width + index * width
-                return 0
+                return 3
               }
               y: {
                 var count = button.icons.urls.length
                 if (count === 1) return (parent.height - height) / 2 - 1
-                if (count >= 3 && index === 2) return parent.height - height
-                return count >= 3 ? 0 : 4
+                if (count >= 3 && index === 2) return parent.height - height - 2
+                return count >= 3 ? 2 : 4
               }
               fillMode: Image.PreserveAspectFit
               smooth: true
             }
-          }
-
-          Text {
-            visible: button.icons.extra > 0
-            anchors.right: parent.right
-            anchors.rightMargin: 3
-            anchors.top: parent.top
-            anchors.topMargin: 2
-            text: "+" + button.icons.extra
-            color: button.bar ? button.bar.barForeground : Color.foreground
-            font.family: button.fontFamily
-            font.pixelSize: Math.max(7, button.fontSize * 0.54)
-            font.weight: Font.DemiBold
-            style: Text.Outline
-            styleColor: Color.background
           }
 
           Text {
