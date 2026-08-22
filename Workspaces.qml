@@ -12,7 +12,7 @@ BarWidget {
   // Max app icons rendered per workspace before collapsing into "+N"
   property int maxIcons: 3
   readonly property real iconSize: Math.max(10, Math.min(14, root.barSize * 0.34))
-  readonly property real tripleIconSize: Math.max(8, Math.min(10, root.barSize * 0.27))
+  readonly property real tripleIconSize: Math.max(9, Math.min(11, (root.barSize - 3) / 2))
   readonly property real singleIconSize: Math.max(15, Math.min(17, root.barSize * 0.46))
 
   function workspaceById(id) {
@@ -183,8 +183,8 @@ BarWidget {
               y: {
                 var count = button.icons.urls.length
                 if (count === 1) return (parent.height - height) / 2 - 1
-                if (count >= 3 && index === 2) return parent.height - height - 3
-                return 4
+                if (count >= 3 && index === 2) return parent.height - height - 2
+                return count >= 3 ? 2 : 4
               }
               fillMode: Image.PreserveAspectFit
               smooth: true
