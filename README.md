@@ -22,6 +22,12 @@ omarchy plugin enable sofos.workspaces left
 
 The widget is compatible with Omarchy Shell's horizontal and vertical bars.
 
+## Remove
+
+```bash
+omarchy plugin remove sofos.workspaces
+```
+
 ## License
 
 MIT

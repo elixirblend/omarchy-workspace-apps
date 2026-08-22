@@ -15,6 +15,7 @@
     "displayName": "Workspace Apps",
     "description": "See the applications in each workspace at a glance",
     "category": "Compositor",
+    "defaultSection": "left",
     "allowMultiple": false
   }
 }
