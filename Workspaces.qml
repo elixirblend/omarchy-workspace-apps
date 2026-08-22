@@ -11,6 +11,10 @@ BarWidget {
 
   // Max app icons rendered per workspace before collapsing into "+N"
   property int maxIcons: 3
+  readonly property int maxToplevels: 64
+  readonly property int maxTooltipNames: 12
+  readonly property int maxTooltipNameLength: 80
+  readonly property int maxAppIdLength: 256
   readonly property real iconSize: Math.max(10, Math.min(14, root.barSize * 0.34))
   readonly property real tripleIconSize: Math.max(9, Math.min(11, (root.barSize - 3) / 2))
   readonly property real singleIconSize: Math.max(15, Math.min(17, root.barSize * 0.46))
@@ -45,8 +49,8 @@ BarWidget {
   function appIdOf(toplevel) {
     var wl = toplevel.wayland
     var ipc = toplevel.lastIpcObject
-    if (wl && wl.appId) return String(wl.appId)
-    if (ipc && (ipc.class || ipc.initialClass)) return String(ipc.class || ipc.initialClass)
+    if (wl && wl.appId) return String(wl.appId).slice(0, root.maxAppIdLength)
+    if (ipc && (ipc.class || ipc.initialClass)) return String(ipc.class || ipc.initialClass).slice(0, root.maxAppIdLength)
     return ""
   }
 
@@ -77,18 +81,30 @@ BarWidget {
     return Quickshell.iconPath("application-x-executable", true)
   }
 
+  // WidgetButton tooltips use rich text, so desktop-entry names must be
+  // bounded and escaped before they reach tooltipText.
+  function safeTooltipText(value) {
+    return String(value || "").slice(0, root.maxTooltipNameLength)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\"/g, "&quot;")
+      .replace(/'/g, "&#39;")
+  }
+
   function iconModelFor(id) {
     var toplevels = root.toplevelsOf(id)
     var urls = []
     var names = []
     var seen = ({})
     var appCount = 0
-    for (var i = 0; i < toplevels.length; i++) {
+    var limit = Math.min(toplevels.length, root.maxToplevels)
+    for (var i = 0; i < limit; i++) {
       var info = root.appInfoFor(toplevels[i])
       if (info.key.length === 0 || seen[info.key]) continue
       seen[info.key] = true
       appCount++
-      names.push(info.name)
+      if (names.length < root.maxTooltipNames) names.push(root.safeTooltipText(info.name))
       if (urls.length < root.maxIcons) urls.push(root.iconUrlFor(info))
     }
     return { "urls": urls, "names": names, "extra": Math.max(0, appCount - urls.length) }
