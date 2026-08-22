@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "sofos.workspaces",
+  "name": "Workspace Apps",
+  "version": "1.0.0",
+  "author": "Elixir Blend",
+  "description": "Compact workspace tiles showing up to three application icons and workspace numbers",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Workspaces.qml"
+  },
+  "barWidget": {
+    "displayName": "Workspace Apps",
+    "description": "See the applications in each workspace at a glance",
+    "category": "Compositor",
+    "allowMultiple": false
+  }
+}
