@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "sofos.workspaces",
   "name": "Workspace Apps",
-  "version": "1.0.0",
+  "version": "1.3.0",
   "author": "Elixir Blend",
   "description": "Compact workspace tiles showing up to three application icons and workspace numbers",
   "kinds": [
@@ -16,6 +16,26 @@
     "description": "See the applications in each workspace at a glance",
     "category": "Compositor",
     "defaultSection": "left",
-    "allowMultiple": false
+    "allowMultiple": false,
+    "defaults": {
+      "minimumWorkspaces": 5,
+      "maxIcons": 3,
+      "scrollToSwitch": true,
+      "showUrgent": true,
+      "showAudio": true,
+      "showArrivalFlash": true,
+      "showCompletionFlash": true,
+      "animateChanges": true
+    },
+    "schema": [
+      { "key": "minimumWorkspaces", "type": "integer", "label": "Minimum workspaces", "min": 1, "max": 10, "step": 1, "defaultValue": 5 },
+      { "key": "maxIcons", "type": "integer", "label": "Icons per workspace", "min": 1, "max": 3, "step": 1, "defaultValue": 3 },
+      { "key": "scrollToSwitch", "type": "boolean", "label": "Scroll to switch workspaces", "defaultValue": true },
+      { "key": "showUrgent", "type": "boolean", "label": "Show urgent workspaces", "defaultValue": true },
+      { "key": "showAudio", "type": "boolean", "label": "Show audio-playing indicator", "defaultValue": true },
+      { "key": "showArrivalFlash", "type": "boolean", "label": "Flash when a new window opens", "defaultValue": true },
+      { "key": "showCompletionFlash", "type": "boolean", "label": "Flash when an app finishes a task", "defaultValue": true },
+      { "key": "animateChanges", "type": "boolean", "label": "Animate workspace changes", "defaultValue": true }
+    ]
   }
 }
